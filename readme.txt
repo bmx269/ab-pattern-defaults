@@ -1,56 +1,150 @@
 === AB Pattern Defaults ===
-Contributors:      affinitybridge
-Tags:              block patterns, editor, default content, post types
+Contributors: bmx269
+Tags: block patterns, default content, post types, block editor, gutenberg
 Requires at least: 6.5
-Tested up to:      6.9
-Requires PHP:      8.0
-Stable tag:        1.0.0
-License:           GPL-2.0-or-later
-License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Tested up to: 7.1
+Requires PHP: 8.0
+Stable tag: 1.0.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-Set a default block pattern for any post type's new-post editor via a simple settings UI.
+Start every new post, page or custom post type from a block pattern you pick. One default per post type, set from a settings screen.
 
 == Description ==
 
-AB Pattern Defaults lets you assign a block pattern to any registered post type. When a new post of that type is created, the editor is pre-populated with the pattern's content — no more starting from a blank canvas.
+AB Pattern Defaults lets a site administrator pick a block pattern for each post type. When someone creates a new post of that type, the editor opens with the pattern's blocks already in place.
 
-**Key features:**
+It's built for sites where every post of a given type follows the same structure: staff profiles, locations, events, case studies, press releases. Build the layout once as a pattern, point the post type at it, and writers start from the right blocks every time.
 
-* Settings page under *Settings → AB Pattern Defaults* listing every public post type
-* Enter a pattern slug per post type — no code changes required
-* Searches both database-stored patterns (Saved Patterns / wp_block) and file-registered patterns
-* Database patterns take priority over file-registered patterns
-* Status indicator on the settings page confirms whether each slug resolves to a real pattern
-* File patterns can be referenced by full registered name (e.g. `myplugin/my-pattern`) or by slug alone (e.g. `my-pattern`)
+**[Try it in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/bmx269/ab-pattern-defaults/main/blueprint.json)** to test the plugin in your browser, with nothing to install.
+
+= Key features =
+
+**Defaults per post type**
+
+* One settings screen under *Appearance → AB Pattern Defaults* lists every public post type, including custom post types
+* Set a different pattern for posts, pages and each custom post type, or leave one blank to keep the empty editor
+* No theme code, `block.json` metadata or template changes required
+
+**Works with the patterns you already have**
+
+* Use patterns you built in the editor (Saved Patterns, stored in the database)
+* Use patterns registered by your theme's `/patterns` folder or by a plugin
+* Reference a registered pattern by its full name (`mytheme/staff-profile`) or just the part after the slash (`staff-profile`)
+* Slug fields suggest every pattern on the site as you type
+
+**Clear feedback**
+
+* A status column shows whether each slug matches a Saved Pattern, a registered pattern, or nothing
+* If a slug stops matching, for example after a theme switch, new posts open empty rather than breaking
+
+**Safe defaults**
+
+* Only fills posts that start out empty, so content passed in another way is kept
+* Draft and unpublished Saved Patterns are ignored
+* Only administrators can change the settings
+* No front-end code, no external requests and no tracking. The plugin stores one option and removes it when you delete the plugin
+
+= How a slug is matched =
+
+When a new post is created, the plugin looks for the configured slug in this order and uses the first match:
+
+1. A published Saved Pattern whose slug matches
+2. A registered pattern whose full name matches
+3. A registered pattern whose name ends with the slug
+
+Saved Patterns win. If the setting uses a short slug like `staff-profile`, you can override a theme's pattern by creating a Saved Pattern with that slug.
+
+= How it differs from core starter patterns =
+
+WordPress can already offer "starter patterns" when you create a new page. Those are useful, but they work differently:
+
+* Core asks the writer to choose a pattern each time. This plugin applies the one the administrator picked, automatically.
+* Core only offers patterns that declare the `core/post-content` block type, and by default only for pages. This plugin works with any pattern and any public post type.
+* Core's list comes from registered patterns. This plugin also works with Saved Patterns made in the editor, with no code.
+
+When a post type has a default set, the post is no longer empty, so core's "Choose a pattern" window doesn't open for that post type. Post types without a default keep core's behaviour.
+
+= Support & Contribute =
+
+* **Support:** ask questions and report problems in the [support forum](https://wordpress.org/support/plugin/ab-pattern-defaults/).
+* **Contribute:** the code lives on [GitHub](https://github.com/bmx269/ab-pattern-defaults). Bug reports and pull requests are welcome in the [issue tracker](https://github.com/bmx269/ab-pattern-defaults/issues).
+
+AB Pattern Defaults is written by Trent Stromkins and maintained by [Affinity Bridge](https://affinitybridge.com).
 
 == Installation ==
 
-1. Upload the `ab-pattern-defaults` folder to the `/wp-content/plugins/` directory, or install via *Plugins → Add New Plugin → Upload Plugin*.
-2. Activate the plugin through the *Plugins* menu in WordPress.
-3. Navigate to *Settings → AB Pattern Defaults*.
-4. Enter the pattern slug for each post type you want to pre-populate and save.
+1. Install the plugin from *Plugins → Add New Plugin* by searching for "AB Pattern Defaults", or upload the `ab-pattern-defaults` folder to `/wp-content/plugins/`.
+2. Activate the plugin through the *Plugins* screen.
+3. Go to *Appearance → AB Pattern Defaults*.
+4. Enter a pattern slug next to each post type you want to pre-fill. The field suggests available patterns as you type.
+5. Save, then check the Status column. A green tick means the slug matched a pattern.
+6. Create a new post of that type to see the pattern in the editor.
 
 == Frequently Asked Questions ==
 
 = Where do I find the pattern slug? =
 
-For a **database pattern** (Saved Pattern), open *Appearance → Editor → Patterns*, click the pattern, and note the URL slug — it is the value shown in the permalink field.
+Start typing in a slug field on the settings screen. It suggests every published Saved Pattern and every registered pattern on the site.
 
-For a **file-registered pattern**, the slug is the second segment of the registered name (e.g. for `myplugin/my-pattern` the slug is `my-pattern`). You can also enter the full registered name.
+A Saved Pattern's slug is its post slug, usually its title in lowercase with hyphens. A registered pattern's slug is its registered name, such as `mytheme/staff-profile`, or just `staff-profile`.
 
-= Which takes priority — database or file? =
+= Which wins if a Saved Pattern and a registered pattern share a slug? =
 
-Database-stored patterns (Saved Patterns) are checked first. File-registered patterns are used as a fallback.
+The Saved Pattern. Registered patterns are only used when no published Saved Pattern matches.
 
 = Does this work with custom post types? =
 
-Yes. Every public post type registered on your site (excluding Media and Patterns themselves) appears in the settings table.
+Yes. Every public post type appears in the settings table, except Media and Patterns themselves.
 
 = What happens if the slug doesn't match any pattern? =
 
-The editor opens with its default blank state, exactly as it would without the plugin.
+New posts open with the normal empty editor, as if the plugin weren't there. The Status column shows "Pattern not found" so you can spot the problem.
+
+= Will it overwrite content that is already there? =
+
+No. It only fills new posts that start out empty. Existing posts are never changed.
+
+= I use a synced pattern. Will later edits to it update my posts? =
+
+No. The plugin copies the pattern's blocks into each new post as a starting point. Changing the pattern later affects posts created after the change, not ones that already exist.
+
+= Why doesn't the "Choose a pattern" window appear anymore? =
+
+WordPress only shows that window for empty new posts. Once a post type has a default pattern, its new posts aren't empty, so the window stays closed. Clear the slug for that post type to get it back.
+
+= Who can change the settings? =
+
+Administrators, or any role with the `manage_options` capability.
+
+= Does it work with the Classic Editor? =
+
+It works, but patterns are block markup, so the Classic Editor shows the raw HTML and block comments. The plugin is meant for the block editor.
+
+= Does it work on multisite? =
+
+Yes. Each site has its own settings. Deleting the plugin removes the setting from every site in the network.
+
+= What does the plugin store, and what happens when I delete it? =
+
+It stores a single option, `ab_pattern_defaults`, holding the post type to slug map. Deleting the plugin from the Plugins screen removes that option. Your patterns and posts are not touched.
 
 == Changelog ==
 
 = 1.0.0 =
-* Initial release.
+
+Initial release.
+
+* Settings screen under Appearance to set a default block pattern for each public post type
+* Supports Saved Patterns and patterns registered by themes and plugins
+* Saved Patterns take priority over registered patterns with the same slug
+* Status column shows whether each slug matches a pattern
+* Slug fields suggest available patterns as you type
+* Only fills new posts that start out empty, and ignores unpublished Saved Patterns
+* Settings link on the Plugins screen
+* Removes its option on uninstall, including across a multisite network
+
+== Upgrade Notice ==
+
+= 1.0.0 =
+Initial release of AB Pattern Defaults.

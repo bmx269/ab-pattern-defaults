@@ -9,10 +9,17 @@ WordPress plugin that pre-populates the block editor with a configurable block p
 ├── uninstall.php             # Removes plugin option on delete
 ├── readme.txt                # WordPress.org plugin readme
 ├── README.md                 # GitHub-facing documentation
-├── languages/                # Translation files (POT + .po/.mo)
+├── languages/                # Translation files (POT); regenerate with `wp i18n make-pot . languages/ab-pattern-defaults.pot --exclude=.github,.claude`
+├── blueprint.json            # WordPress Playground blueprint (installs from WordPress.org)
+├── deploy.sh                 # Manual SVN deploy fallback (`./deploy.sh <svn-checkout>`)
+├── .distignore               # Excluded from the WP.org package; must list /.git (10up deploy action)
 ├── .wordpress-org/           # WP.org assets (banners, icons, screenshots) - if/when added
-└── .github/workflows/        # CI / deployment automation - if/when added
+└── .github/workflows/
+    ├── plugin-check.yml      # CI: WordPress Plugin Check on push/PR to main
+    └── deploy.yml            # CD: deploys to WordPress.org SVN when a GitHub release is published
 ```
+
+Release tooling mirrors `enable-navigation-icons` (already published on WP.org under the `bmx269` account).
 
 ## Development Standards
 - Follow WordPress Coding Standards (WPCS) for PHP.
@@ -25,8 +32,8 @@ WordPress plugin that pre-populates the block editor with a configurable block p
 
 ## Key Architecture
 - Single option `ab_pattern_defaults` stores `[ post_type => pattern_slug ]` map.
-- `default_content` filter resolves the saved slug to block markup at new-post time.
-- Resolution order: (1) `wp_block` post by `post_name`, (2) full registered pattern name, (3) registered pattern slug suffix.
+- `default_content` filter resolves the saved slug to block markup at new-post time, only when the incoming content is empty.
+- Resolution order: (1) published `wp_block` post by `post_name`, (2) full registered pattern name, (3) registered pattern slug suffix.
 - Settings page lists every public post type (minus `attachment` and `wp_block`) with a live status badge per row.
 
 ## Versioning & Releases
@@ -35,4 +42,4 @@ WordPress plugin that pre-populates the block editor with a configurable block p
 - Update `Changelog` sections in both `README.md` and `readme.txt` for every release.
 
 ## Attribution
-Plugin authored and maintained by [Affinity Bridge](https://affinitybridge.com). Licensed GPL-2.0-or-later.
+Plugin authored by Trent Stromkins (WordPress.org: `bmx269`) and maintained by [Affinity Bridge](https://affinitybridge.com). Licensed GPL-2.0-or-later.

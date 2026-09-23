@@ -3,31 +3,33 @@
 Set a default block pattern for any post type's new-post editor. Database-stored patterns take priority over file-registered patterns.
 
 - **Requires:** WordPress 6.5+, PHP 8.0+
-- **License:** GPL-2.0-or-later
-- **Author:** [Affinity Bridge](https://affinitybridge.com)
+- **License:** GPLv2 or later
+- **Author:** Trent Stromkins
+- **Maintained by:** [Affinity Bridge](https://affinitybridge.com)
 
 ## Overview
 
-AB Pattern Defaults adds a settings page where you can assign a block pattern to each registered post type. When a new post of that type is created, the editor is pre-populated with the pattern's content — no more blank canvas.
+AB Pattern Defaults adds a settings page where you can assign a block pattern to each registered post type. When a new post of that type is created, the editor opens with the pattern's blocks already in place.
 
 ## Features
 
-- Settings page under **Settings → AB Pattern Defaults**
+- Settings page under **Appearance → AB Pattern Defaults**
 - Lists every public post type on the site
 - Accepts either a database pattern slug (Saved Pattern) or a file-registered pattern name
 - Database patterns take priority over file-registered patterns
 - Live status indicator confirms whether each configured slug resolves to a real pattern
-- Clean uninstall — removes its option when the plugin is deleted
+- Slug fields suggest the patterns available on the site as you type
+- Removes its option when the plugin is deleted, on every site in a multisite network
 
 ## Installation
 
 1. Copy the `ab-pattern-defaults` folder into `wp-content/plugins/`, or upload the zip via **Plugins → Add New → Upload Plugin**.
 2. Activate the plugin from the **Plugins** screen.
-3. Visit **Settings → AB Pattern Defaults** and enter the pattern slug for each post type you want to pre-populate.
+3. Visit **Appearance → AB Pattern Defaults** and enter the pattern slug for each post type you want to pre-populate.
 
 ## Usage
 
-For a **database pattern** (Saved Pattern), use the post slug — for example `branch-default`.
+For a **database pattern** (Saved Pattern), use the post slug, for example `branch-default`.
 
 For a **file-registered pattern**, use either:
 
@@ -40,15 +42,33 @@ If no pattern matches the configured slug, the editor opens with its default bla
 
 The plugin hooks `default_content` and looks up the pattern content in this order:
 
-1. Database-stored pattern (`wp_block` post type) matched by `post_name`
+1. Published database pattern (`wp_block` post type) matched by `post_name`
 2. File-registered pattern matched by full registered name
 3. File-registered pattern matched by the slug portion of the name
+
+The pattern is only applied when the new post's content is empty, so content passed in another way (for example the `content` query arg) is kept. Core then hands the markup to the block editor as unsaved initial edits.
+
+Because the new post isn't empty, core's "Choose a pattern" starter-pattern modal doesn't open for post types that have a default. Post types without one keep core's behaviour.
 
 ## Development
 
 Main plugin file: [`ab-pattern-defaults.php`](ab-pattern-defaults.php)
 
 Option key: `ab_pattern_defaults` (associative array, post_type => pattern slug)
+
+Try it locally with WordPress Playground:
+
+```bash
+npx @wp-playground/cli@latest server --auto-mount
+```
+
+Before a release, run [Plugin Check](https://wordpress.org/plugins/plugin-check/) against the built package (files not listed in `.distignore`). CI runs it on every push and pull request to `main`.
+
+## Support & Contribute
+
+- **Support:** [WordPress.org support forum](https://wordpress.org/support/plugin/ab-pattern-defaults/)
+- **Bugs and feature requests:** [GitHub issues](https://github.com/bmx269/ab-pattern-defaults/issues)
+- **Contribute:** pull requests are welcome against `main`.
 
 ## Changelog
 

@@ -1,0 +1,15 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Exclude dev files from git archive / distribution
+/.claude             export-ignore
+/.github             export-ignore
+/.wordpress-org      export-ignore
+.distignore          export-ignore
+.editorconfig        export-ignore
+.gitattributes       export-ignore
+.gitignore           export-ignore
+CLAUDE.md            export-ignore
+README.md            export-ignore
+blueprint.json       export-ignore
+deploy.sh            export-ignore
