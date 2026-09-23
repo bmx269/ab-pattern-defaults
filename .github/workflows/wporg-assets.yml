@@ -1,0 +1,41 @@
+name: Update WordPress.org readme and assets
+
+# Pushes readme.txt and .wordpress-org/ changes to SVN between releases.
+# Idle until the repository variable WPORG_SVN_READY is set to "true",
+# because the SVN repository only exists once the plugin is approved.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - readme.txt
+      - .wordpress-org/**
+
+jobs:
+  assets:
+    name: Push readme and assets to WordPress.org
+    if: vars.WPORG_SVN_READY == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # A Stable tag that is not yet released would point WordPress.org at a
+      # missing tag. Version bumps ship through the deploy workflow instead.
+      - name: Check Stable tag is already released
+        run: |
+          STABLE=$(grep -m1 "^Stable tag:" readme.txt | sed 's/.*Stable tag:[[:space:]]*//' | tr -d '[:space:]')
+          if ! git tag --list | sed 's/^v//' | grep -qx "$STABLE"; then
+            echo "Stable tag $STABLE has no git tag yet. Publish a release to deploy it."
+            exit 1
+          fi
+
+      - name: WordPress.org plugin asset/readme update
+        uses: 10up/action-wordpress-plugin-asset-update@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: ab-pattern-defaults
+          IGNORE_OTHER_FILES: true

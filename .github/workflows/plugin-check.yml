@@ -14,5 +14,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Build package
+        run: ./build.sh
+
       - name: Run Plugin Check
         uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: ./build/ab-pattern-defaults

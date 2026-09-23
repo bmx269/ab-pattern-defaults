@@ -53,25 +53,9 @@ mkdir -p "$TRUNK_DIR"
 # Remove old trunk contents (except .svn).
 find "$TRUNK_DIR" -mindepth 1 -not -path '*/.svn/*' -not -name '.svn' -delete 2>/dev/null || true
 
-# Copy distributable files to trunk.
-# Uses .distignore to determine what to exclude.
-DIST_FILES=(
-    "$PLUGIN_SLUG.php"
-    "uninstall.php"
-    "readme.txt"
-    "LICENSE"
-)
-
-for file in "${DIST_FILES[@]}"; do
-    if [ -f "$PLUGIN_DIR/$file" ]; then
-        cp "$PLUGIN_DIR/$file" "$TRUNK_DIR/$file"
-    fi
-done
-
-# Copy directories.
-if [ -d "$PLUGIN_DIR/languages" ]; then
-    cp -r "$PLUGIN_DIR/languages" "$TRUNK_DIR/languages"
-fi
+# Build the package from .distignore and copy it into trunk.
+"$PLUGIN_DIR/build.sh"
+cp -R "$PLUGIN_DIR/build/$PLUGIN_SLUG/." "$TRUNK_DIR/"
 
 # --- Sync assets ---
 echo "Syncing assets..."

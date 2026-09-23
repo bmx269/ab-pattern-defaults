@@ -62,7 +62,21 @@ Try it locally with WordPress Playground:
 npx @wp-playground/cli@latest server --auto-mount
 ```
 
-Before a release, run [Plugin Check](https://wordpress.org/plugins/plugin-check/) against the built package (files not listed in `.distignore`). CI runs it on every push and pull request to `main`.
+Build the distributable package (everything not listed in `.distignore`):
+
+```bash
+./build.sh   # build/ab-pattern-defaults/ and build/ab-pattern-defaults.zip
+```
+
+CI builds the package and runs [Plugin Check](https://wordpress.org/plugins/plugin-check/) against it on every push and pull request to `main`.
+
+## Releasing
+
+Publishing a GitHub release deploys to WordPress.org. The release tag (`1.2.0` or `v1.2.0`) must match the plugin header Version and the readme Stable tag, or the workflow stops. The built zip is attached to the release.
+
+Changes to `readme.txt` or `.wordpress-org/` alone are pushed to WordPress.org on merge to `main`, once the `WPORG_SVN_READY` repository variable is `true`.
+
+Deploys need the `SVN_USERNAME` and `SVN_PASSWORD` repository secrets. `./deploy.sh <svn-checkout>` is a manual fallback.
 
 ## Support & Contribute
 

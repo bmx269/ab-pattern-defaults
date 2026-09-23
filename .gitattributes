@@ -12,4 +12,5 @@
 CLAUDE.md            export-ignore
 README.md            export-ignore
 blueprint.json       export-ignore
+build.sh             export-ignore
 deploy.sh            export-ignore

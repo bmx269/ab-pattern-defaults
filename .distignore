@@ -6,6 +6,7 @@
 /.claude
 /.github
 /.wordpress-org
+/build
 /node_modules
 /vendor
 
@@ -16,6 +17,7 @@
 .gitignore
 CLAUDE.md
 README.md
+build.sh
 deploy.sh
 blueprint.json
 

@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     name: Deploy to WordPress.org SVN
@@ -12,9 +15,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Tag v1.2.0 or 1.2.0 must match the plugin header and readme Stable tag.
+      - name: Check release tag matches plugin version
+        run: ./build.sh --check "${GITHUB_REF_NAME#v}"
+
       - name: WordPress Plugin Deploy
+        id: deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SLUG: ab-pattern-defaults
+
+      - name: Attach zip to the GitHub release
+        run: gh release upload "$GITHUB_REF_NAME" "${{ steps.deploy.outputs.zip-path }}" --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
