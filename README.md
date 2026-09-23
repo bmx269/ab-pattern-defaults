@@ -2,6 +2,8 @@
 
 Set a default block pattern for any post type's new-post editor. Database-stored patterns take priority over file-registered patterns.
 
+**[Try it in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/bmx269/ab-pattern-defaults/main/blueprint.json)** to test the plugin in your browser, with nothing to install. The demo sets a sample pattern as the default for Posts, so *Posts → Add New* opens with it.
+
 - **Requires:** WordPress 6.5+, PHP 8.0+
 - **License:** GPLv2 or later
 - **Author:** Trent Stromkins

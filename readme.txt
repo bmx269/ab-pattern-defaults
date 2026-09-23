@@ -16,7 +16,7 @@ AB Pattern Defaults lets a site administrator pick a block pattern for each post
 
 It's built for sites where every post of a given type follows the same structure: staff profiles, locations, events, case studies, press releases. Build the layout once as a pattern, point the post type at it, and writers start from the right blocks every time.
 
-**[Try it in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/bmx269/ab-pattern-defaults/main/blueprint.json)** to test the plugin in your browser, with nothing to install.
+**[Try it in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/bmx269/ab-pattern-defaults/main/blueprint.json)** to test the plugin in your browser, with nothing to install. The demo sets a sample pattern as the default for Posts, so *Posts → Add New* opens with it.
 
 = Key features =
 
@@ -128,6 +128,12 @@ Yes. Each site has its own settings. Deleting the plugin removes the setting fro
 = What does the plugin store, and what happens when I delete it? =
 
 It stores a single option, `ab_pattern_defaults`, holding the post type to slug map. Deleting the plugin from the Plugins screen removes that option. Your patterns and posts are not touched.
+
+== Screenshots ==
+
+1. The settings screen under Appearance. Each public post type gets a pattern slug, and the Status column confirms whether it matched a Saved Pattern or a registered pattern.
+2. A new Staff profile opens with the "Staff profile" Saved Pattern already in place.
+3. A new page opens with a pattern from the Twenty Twenty-Five theme, referenced by its full registered name.
 
 == Changelog ==
 
