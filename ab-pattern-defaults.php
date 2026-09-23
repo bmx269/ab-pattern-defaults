@@ -120,6 +120,10 @@ function render_settings_page(): void {
 	?>
 	<div class="wrap">
 		<h1><?php echo esc_html__( 'AB Pattern Defaults', 'ab-pattern-defaults' ); ?></h1>
+		<?php
+		// Pages outside the Settings menu don't print save notices automatically.
+		settings_errors();
+		?>
 		<p>
 			<?php esc_html_e( "Enter a pattern slug for each post type. When a new post is created the editor will be pre-populated with that pattern's content.", 'ab-pattern-defaults' ); ?>
 			<strong><?php esc_html_e( 'Database patterns (saved patterns) take priority over file-registered patterns.', 'ab-pattern-defaults' ); ?></strong>
