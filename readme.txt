@@ -131,9 +131,11 @@ It stores a single option, `ab_pattern_defaults`, holding the post type to slug 
 
 == Screenshots ==
 
-1. The settings screen under Appearance. Each public post type gets a pattern slug, and the Status column confirms whether it matched a Saved Pattern or a registered pattern.
-2. A new Staff profile opens with the "Staff profile" Saved Pattern already in place.
-3. A new page opens with a pattern from the Twenty Twenty-Five theme, referenced by its full registered name.
+1. The settings screen under Appearance lists every public post type. Leave a slug empty and that post type keeps WordPress's normal empty editor, as Location does here.
+2. Start typing in a slug field and it suggests every Saved Pattern and registered pattern on the site, with its title.
+3. After saving, the Status column confirms whether each slug matched a Saved Pattern or a registered pattern.
+4. A new Staff profile opens with the "Staff profile" Saved Pattern already in place.
+5. A new page opens with a pattern from the Twenty Twenty-Five theme, referenced by its full registered name.
 
 == Changelog ==
 
