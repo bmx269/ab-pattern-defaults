@@ -1,21 +1,20 @@
-# AB Pattern Defaults
+# Pattern Primer
 
 Set a default block pattern for any post type's new-post editor. Database-stored patterns take priority over file-registered patterns.
 
-**[Try it in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/bmx269/ab-pattern-defaults/main/blueprint.json)** to test the plugin in your browser, with nothing to install. The demo sets a sample pattern as the default for Posts, so *Posts → Add New* opens with it.
+**[Try it in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/bmx269/pattern-primer/main/blueprint.json)** to test the plugin in your browser, with nothing to install. The demo sets a sample pattern as the default for Posts, so *Posts → Add New* opens with it.
 
 - **Requires:** WordPress 6.5+, PHP 8.0+
 - **License:** GPLv2 or later
-- **Author:** Trent Stromkins
-- **Maintained by:** [Affinity Bridge](https://affinitybridge.com)
+- **Author:** [Trent Stromkins](https://github.com/bmx269)
 
 ## Overview
 
-AB Pattern Defaults adds a settings page where you can assign a block pattern to each registered post type. When a new post of that type is created, the editor opens with the pattern's blocks already in place.
+Pattern Primer adds a settings page where you can assign a block pattern to each registered post type. When a new post of that type is created, the editor opens with the pattern's blocks already in place.
 
 ## Features
 
-- Settings page under **Appearance → AB Pattern Defaults**
+- Settings page under **Appearance → Pattern Primer**
 - Lists every public post type on the site
 - Accepts either a database pattern slug (Saved Pattern) or a file-registered pattern name
 - Database patterns take priority over file-registered patterns
@@ -25,9 +24,9 @@ AB Pattern Defaults adds a settings page where you can assign a block pattern to
 
 ## Installation
 
-1. Copy the `ab-pattern-defaults` folder into `wp-content/plugins/`, or upload the zip via **Plugins → Add New → Upload Plugin**.
+1. Copy the `pattern-primer` folder into `wp-content/plugins/`, or upload the zip via **Plugins → Add New → Upload Plugin**.
 2. Activate the plugin from the **Plugins** screen.
-3. Visit **Appearance → AB Pattern Defaults** and enter the pattern slug for each post type you want to pre-populate.
+3. Visit **Appearance → Pattern Primer** and enter the pattern slug for each post type you want to pre-populate.
 
 ## Usage
 
@@ -54,9 +53,9 @@ Because the new post isn't empty, core's "Choose a pattern" starter-pattern moda
 
 ## Development
 
-Main plugin file: [`ab-pattern-defaults.php`](ab-pattern-defaults.php)
+Main plugin file: [`pattern-primer.php`](pattern-primer.php)
 
-Option key: `ab_pattern_defaults` (associative array, post_type => pattern slug)
+Option key: `pattern_primer` (associative array, post_type => pattern slug)
 
 Try it locally with WordPress Playground:
 
@@ -67,7 +66,7 @@ npx @wp-playground/cli@latest server --auto-mount
 Build the distributable package (everything not listed in `.distignore`):
 
 ```bash
-./build.sh   # build/ab-pattern-defaults/ and build/ab-pattern-defaults.zip
+./build.sh   # build/pattern-primer/ and build/pattern-primer.zip
 ```
 
 CI builds the package and runs [Plugin Check](https://wordpress.org/plugins/plugin-check/) against it on every push and pull request to `main`.
@@ -82,8 +81,8 @@ Deploys need the `SVN_USERNAME` and `SVN_PASSWORD` repository secrets. `./deploy
 
 ## Support & Contribute
 
-- **Support:** [WordPress.org support forum](https://wordpress.org/support/plugin/ab-pattern-defaults/)
-- **Bugs and feature requests:** [GitHub issues](https://github.com/bmx269/ab-pattern-defaults/issues)
+- **Support:** [WordPress.org support forum](https://wordpress.org/support/plugin/pattern-primer/)
+- **Bugs and feature requests:** [GitHub issues](https://github.com/bmx269/pattern-primer/issues)
 - **Contribute:** pull requests are welcome against `main`.
 
 ## Changelog

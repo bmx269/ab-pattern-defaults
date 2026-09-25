@@ -1,24 +1,24 @@
 # Copyright (C) 2026 Trent Stromkins
-# This file is distributed under the same license as the AB Pattern Defaults plugin.
+# This file is distributed under the same license as the Pattern Primer plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: AB Pattern Defaults 1.0.0\n"
+"Project-Id-Version: Pattern Primer 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ab-pattern-defaults\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-23T18:11:36+00:00\n"
+"POT-Creation-Date: 2026-09-25T17:08:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
-"X-Domain: ab-pattern-defaults\n"
+"X-Domain: pattern-primer\n"
 
 #. Plugin Name of the plugin
-#: ab-pattern-defaults.php:47
-#: ab-pattern-defaults.php:48
-#: ab-pattern-defaults.php:122
-msgid "AB Pattern Defaults"
+#: pattern-primer.php:47
+#: pattern-primer.php:48
+#: pattern-primer.php:122
+msgid "Pattern Primer"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -34,50 +34,50 @@ msgid "Trent Stromkins"
 msgstr ""
 
 #. Author URI of the plugin
-msgid "https://affinitybridge.com"
+msgid "https://github.com/bmx269"
 msgstr ""
 
-#: ab-pattern-defaults.php:124
+#: pattern-primer.php:128
 msgid "Enter a pattern slug for each post type. When a new post is created the editor will be pre-populated with that pattern's content."
 msgstr ""
 
-#: ab-pattern-defaults.php:125
+#: pattern-primer.php:129
 msgid "Database patterns (saved patterns) take priority over file-registered patterns."
 msgstr ""
 
 #. translators: 1: example database pattern slug, 2: example file-registered pattern name.
-#: ab-pattern-defaults.php:131
+#: pattern-primer.php:135
 msgid "Enter the post slug for a database pattern (e.g. %1$s), or the full registered name for a file pattern (e.g. %2$s)."
 msgstr ""
 
-#: ab-pattern-defaults.php:144
+#: pattern-primer.php:148
 msgid "Post Type"
 msgstr ""
 
-#: ab-pattern-defaults.php:145
+#: pattern-primer.php:149
 msgid "Pattern Slug"
 msgstr ""
 
-#: ab-pattern-defaults.php:146
+#: pattern-primer.php:150
 msgid "Status"
 msgstr ""
 
-#: ab-pattern-defaults.php:284
+#: pattern-primer.php:288
 msgid "not set"
 msgstr ""
 
-#: ab-pattern-defaults.php:290
+#: pattern-primer.php:294
 msgid "Pattern not found"
 msgstr ""
 
-#: ab-pattern-defaults.php:294
+#: pattern-primer.php:298
 msgid "Found in database"
 msgstr ""
 
-#: ab-pattern-defaults.php:295
+#: pattern-primer.php:299
 msgid "Found in file registry"
 msgstr ""
 
-#: ab-pattern-defaults.php:344
+#: pattern-primer.php:348
 msgid "Settings"
 msgstr ""

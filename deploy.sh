@@ -6,7 +6,7 @@
 #   ./deploy.sh <svn-checkout-path>
 #
 # Example:
-#   ./deploy.sh ../ab-pattern-defaults-svn
+#   ./deploy.sh ../pattern-primer-svn
 #
 # Prerequisites:
 #   - SVN checkout must already exist
@@ -14,7 +14,7 @@
 
 set -euo pipefail
 
-PLUGIN_SLUG="ab-pattern-defaults"
+PLUGIN_SLUG="pattern-primer"
 PLUGIN_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Get version from the main plugin file header.
@@ -31,7 +31,7 @@ if [ $# -ge 1 ]; then
 else
     echo "Usage: $0 <svn-checkout-path>"
     echo ""
-    echo "Example: $0 /path/to/svn/ab-pattern-defaults"
+    echo "Example: $0 /path/to/svn/pattern-primer"
     exit 1
 fi
 

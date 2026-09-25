@@ -1,4 +1,4 @@
-=== AB Pattern Defaults ===
+=== Pattern Primer ===
 Contributors: bmx269
 Tags: block patterns, default content, post types, block editor, gutenberg
 Requires at least: 6.5
@@ -12,17 +12,17 @@ Start every new post, page or custom post type from a block pattern you pick. On
 
 == Description ==
 
-AB Pattern Defaults lets a site administrator pick a block pattern for each post type. When someone creates a new post of that type, the editor opens with the pattern's blocks already in place.
+Pattern Primer lets a site administrator pick a block pattern for each post type. When someone creates a new post of that type, the editor opens with the pattern's blocks already in place.
 
 It's built for sites where every post of a given type follows the same structure: staff profiles, locations, events, case studies, press releases. Build the layout once as a pattern, point the post type at it, and writers start from the right blocks every time.
 
-**[Try it in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/bmx269/ab-pattern-defaults/main/blueprint.json)** to test the plugin in your browser, with nothing to install. The demo sets a sample pattern as the default for Posts, so *Posts → Add New* opens with it.
+**[Try it in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/bmx269/pattern-primer/main/blueprint.json)** to test the plugin in your browser, with nothing to install. The demo sets a sample pattern as the default for Posts, so *Posts → Add New* opens with it.
 
 = Key features =
 
 **Defaults per post type**
 
-* One settings screen under *Appearance → AB Pattern Defaults* lists every public post type, including custom post types
+* One settings screen under *Appearance → Pattern Primer* lists every public post type, including custom post types
 * Set a different pattern for posts, pages and each custom post type, or leave one blank to keep the empty editor
 * No theme code, `block.json` metadata or template changes required
 
@@ -67,16 +67,16 @@ When a post type has a default set, the post is no longer empty, so core's "Choo
 
 = Support & Contribute =
 
-* **Support:** ask questions and report problems in the [support forum](https://wordpress.org/support/plugin/ab-pattern-defaults/).
-* **Contribute:** the code lives on [GitHub](https://github.com/bmx269/ab-pattern-defaults). Bug reports and pull requests are welcome in the [issue tracker](https://github.com/bmx269/ab-pattern-defaults/issues).
+* **Support:** ask questions and report problems in the [support forum](https://wordpress.org/support/plugin/pattern-primer/).
+* **Contribute:** the code lives on [GitHub](https://github.com/bmx269/pattern-primer). Bug reports and pull requests are welcome in the [issue tracker](https://github.com/bmx269/pattern-primer/issues).
 
-AB Pattern Defaults is written by Trent Stromkins and maintained by [Affinity Bridge](https://affinitybridge.com).
+Pattern Primer is written and maintained by Trent Stromkins.
 
 == Installation ==
 
-1. Install the plugin from *Plugins → Add New Plugin* by searching for "AB Pattern Defaults", or upload the `ab-pattern-defaults` folder to `/wp-content/plugins/`.
+1. Install the plugin from *Plugins → Add New Plugin* by searching for "Pattern Primer", or upload the `pattern-primer` folder to `/wp-content/plugins/`.
 2. Activate the plugin through the *Plugins* screen.
-3. Go to *Appearance → AB Pattern Defaults*.
+3. Go to *Appearance → Pattern Primer*.
 4. Enter a pattern slug next to each post type you want to pre-fill. The field suggests available patterns as you type.
 5. Save, then check the Status column. A green tick means the slug matched a pattern.
 6. Create a new post of that type to see the pattern in the editor.
@@ -127,15 +127,14 @@ Yes. Each site has its own settings. Deleting the plugin removes the setting fro
 
 = What does the plugin store, and what happens when I delete it? =
 
-It stores a single option, `ab_pattern_defaults`, holding the post type to slug map. Deleting the plugin from the Plugins screen removes that option. Your patterns and posts are not touched.
+It stores a single option, `pattern_primer`, holding the post type to slug map. Deleting the plugin from the Plugins screen removes that option. Your patterns and posts are not touched.
 
 == Screenshots ==
 
 1. The settings screen under Appearance lists every public post type. Leave a slug empty and that post type keeps WordPress's normal empty editor, as Location does here.
-2. Start typing in a slug field and it suggests every Saved Pattern and registered pattern on the site, with its title.
-3. After saving, the Status column confirms whether each slug matched a Saved Pattern or a registered pattern.
-4. A new Staff profile opens with the "Staff profile" Saved Pattern already in place.
-5. A new page opens with a pattern from the Twenty Twenty-Five theme, referenced by its full registered name.
+2. After saving, the Status column confirms whether each slug matched a Saved Pattern or a registered pattern.
+3. A new Staff profile opens with the "Staff profile" Saved Pattern already in place.
+4. A new page opens with a pattern from the Twenty Twenty-Five theme, referenced by its full registered name.
 
 == Changelog ==
 
@@ -155,4 +154,4 @@ Initial release.
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of AB Pattern Defaults.
+Initial release of Pattern Primer.

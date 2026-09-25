@@ -1,15 +1,15 @@
 <?php
 /**
- * Uninstall routine for AB Pattern Defaults.
+ * Uninstall routine for Pattern Primer.
  *
  * Runs when the user deletes the plugin from the Plugins screen.
  *
- * @package AffinityBridge\PatternDefaults
+ * @package PatternPrimer
  */
 
 declare(strict_types=1);
 
-namespace AffinityBridge\PatternDefaults;
+namespace PatternPrimer;
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
@@ -19,7 +19,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
  * Delete the plugin option from every site.
  */
 function uninstall(): void {
-	$option = 'ab_pattern_defaults';
+	$option = 'pattern_primer';
 
 	if ( ! is_multisite() ) {
 		delete_option( $option );

@@ -1,24 +1,24 @@
 <?php
 /**
- * Plugin Name:       AB Pattern Defaults
- * Plugin URI:        https://github.com/bmx269/ab-pattern-defaults
+ * Plugin Name:       Pattern Primer
+ * Plugin URI:        https://github.com/bmx269/pattern-primer
  * Description:       Set a default block pattern for any post type's new-post editor. Database-stored patterns take priority over file-registered patterns.
  * Version:           1.0.0
  * Requires at least: 6.5
  * Requires PHP:      8.0
  * Author:            Trent Stromkins
- * Author URI:        https://affinitybridge.com
+ * Author URI:        https://github.com/bmx269
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * Text Domain:       ab-pattern-defaults
+ * Text Domain:       pattern-primer
  * Domain Path:       /languages
  *
- * @package AffinityBridge\PatternDefaults
+ * @package PatternPrimer
  */
 
 declare(strict_types=1);
 
-namespace AffinityBridge\PatternDefaults;
+namespace PatternPrimer;
 
 use WP_Block_Patterns_Registry;
 use WP_Post;
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const OPTION_KEY = 'ab_pattern_defaults';
+const OPTION_KEY = 'pattern_primer';
 
 add_action( 'admin_menu', __NAMESPACE__ . '\\register_settings_page' );
 add_action( 'admin_init', __NAMESPACE__ . '\\register_settings' );
@@ -44,10 +44,10 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), __NAMESPACE__ 
  */
 function register_settings_page(): void {
 	add_theme_page(
-		__( 'AB Pattern Defaults', 'ab-pattern-defaults' ),
-		__( 'AB Pattern Defaults', 'ab-pattern-defaults' ),
+		__( 'Pattern Primer', 'pattern-primer' ),
+		__( 'Pattern Primer', 'pattern-primer' ),
 		'manage_options',
-		'ab-pattern-defaults',
+		'pattern-primer',
 		__NAMESPACE__ . '\\render_settings_page'
 	);
 }
@@ -57,7 +57,7 @@ function register_settings_page(): void {
  */
 function register_settings(): void {
 	register_setting(
-		'ab_pattern_defaults_group',
+		'pattern_primer_group',
 		OPTION_KEY,
 		array(
 			'type'              => 'array',
@@ -119,20 +119,20 @@ function render_settings_page(): void {
 	$saved      = get_saved_slugs();
 	?>
 	<div class="wrap">
-		<h1><?php echo esc_html__( 'AB Pattern Defaults', 'ab-pattern-defaults' ); ?></h1>
+		<h1><?php echo esc_html__( 'Pattern Primer', 'pattern-primer' ); ?></h1>
 		<?php
 		// Pages outside the Settings menu don't print save notices automatically.
 		settings_errors();
 		?>
 		<p>
-			<?php esc_html_e( "Enter a pattern slug for each post type. When a new post is created the editor will be pre-populated with that pattern's content.", 'ab-pattern-defaults' ); ?>
-			<strong><?php esc_html_e( 'Database patterns (saved patterns) take priority over file-registered patterns.', 'ab-pattern-defaults' ); ?></strong>
+			<?php esc_html_e( "Enter a pattern slug for each post type. When a new post is created the editor will be pre-populated with that pattern's content.", 'pattern-primer' ); ?>
+			<strong><?php esc_html_e( 'Database patterns (saved patterns) take priority over file-registered patterns.', 'pattern-primer' ); ?></strong>
 		</p>
 		<p>
 			<?php
 			printf(
 				/* translators: 1: example database pattern slug, 2: example file-registered pattern name. */
-				esc_html__( 'Enter the post slug for a database pattern (e.g. %1$s), or the full registered name for a file pattern (e.g. %2$s).', 'ab-pattern-defaults' ),
+				esc_html__( 'Enter the post slug for a database pattern (e.g. %1$s), or the full registered name for a file pattern (e.g. %2$s).', 'pattern-primer' ),
 				'<code>branch-default</code>',
 				'<code>myplugin/branch-default</code>'
 			);
@@ -140,21 +140,21 @@ function render_settings_page(): void {
 		</p>
 
 		<form method="post" action="options.php">
-			<?php settings_fields( 'ab_pattern_defaults_group' ); ?>
+			<?php settings_fields( 'pattern_primer_group' ); ?>
 			<?php render_pattern_datalist(); ?>
 			<table class="widefat striped" style="max-width:900px">
 				<thead>
 					<tr>
-						<th style="width:220px"><?php esc_html_e( 'Post Type', 'ab-pattern-defaults' ); ?></th>
-						<th><?php esc_html_e( 'Pattern Slug', 'ab-pattern-defaults' ); ?></th>
-						<th style="width:240px"><?php esc_html_e( 'Status', 'ab-pattern-defaults' ); ?></th>
+						<th style="width:220px"><?php esc_html_e( 'Post Type', 'pattern-primer' ); ?></th>
+						<th><?php esc_html_e( 'Pattern Slug', 'pattern-primer' ); ?></th>
+						<th style="width:240px"><?php esc_html_e( 'Status', 'pattern-primer' ); ?></th>
 					</tr>
 				</thead>
 				<tbody>
 				<?php
 				foreach ( $post_types as $type_slug => $obj ) :
 					$saved_slug = $saved[ $type_slug ] ?? '';
-					$field_id   = 'ab-pattern-defaults-' . $type_slug;
+					$field_id   = 'pattern-primer-' . $type_slug;
 					$type_label = is_string( $obj->labels->singular_name ?? null ) ? $obj->labels->singular_name : $obj->label;
 					?>
 					<tr>
@@ -170,7 +170,7 @@ function render_settings_page(): void {
 								value="<?php echo esc_attr( $saved_slug ); ?>"
 								placeholder="pattern-slug"
 								class="regular-text"
-								list="ab-pattern-defaults-patterns"
+								list="pattern-primer-patterns"
 							>
 						</td>
 						<td><?php echo wp_kses_post( render_pattern_status( $saved_slug ) ); ?></td>
@@ -285,18 +285,18 @@ function locate_pattern( string $slug ): ?array {
  */
 function render_pattern_status( string $slug ): string {
 	if ( '' === $slug ) {
-		return '<span style="color:#646970">&mdash; ' . esc_html__( 'not set', 'ab-pattern-defaults' ) . '</span>';
+		return '<span style="color:#646970">&mdash; ' . esc_html__( 'not set', 'pattern-primer' ) . '</span>';
 	}
 
 	$pattern = locate_pattern( $slug );
 
 	if ( null === $pattern ) {
-		return '<span style="color:#b32d2e">&#10007; ' . esc_html__( 'Pattern not found', 'ab-pattern-defaults' ) . '</span>';
+		return '<span style="color:#b32d2e">&#10007; ' . esc_html__( 'Pattern not found', 'pattern-primer' ) . '</span>';
 	}
 
 	$label = 'database' === $pattern['source']
-		? __( 'Found in database', 'ab-pattern-defaults' )
-		: __( 'Found in file registry', 'ab-pattern-defaults' );
+		? __( 'Found in database', 'pattern-primer' )
+		: __( 'Found in file registry', 'pattern-primer' );
 
 	return '<span style="color:#008a20">&#10003; ' . esc_html( $label ) . '</span>';
 }
@@ -328,7 +328,7 @@ function render_pattern_datalist(): void {
 		}
 	}
 
-	echo '<datalist id="ab-pattern-defaults-patterns">';
+	echo '<datalist id="pattern-primer-patterns">';
 	foreach ( $options as $value => $label ) {
 		printf( '<option value="%1$s" label="%2$s"></option>', esc_attr( (string) $value ), esc_attr( $label ) );
 	}
@@ -344,8 +344,8 @@ function render_pattern_datalist(): void {
 function add_settings_link( array $links ): array {
 	$settings = sprintf(
 		'<a href="%1$s">%2$s</a>',
-		esc_url( admin_url( 'themes.php?page=ab-pattern-defaults' ) ),
-		esc_html__( 'Settings', 'ab-pattern-defaults' )
+		esc_url( admin_url( 'themes.php?page=pattern-primer' ) ),
+		esc_html__( 'Settings', 'pattern-primer' )
 	);
 	array_unshift( $links, $settings );
 	return $links;
