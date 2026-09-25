@@ -1,6 +1,8 @@
 # Pattern Primer
 
-Set a default block pattern for any post type's new-post editor. Database-stored patterns take priority over file-registered patterns.
+Start every new post, page or custom post type from a block pattern you pick. Patterns saved in the Site Editor take priority over patterns in code.
+
+![How Pattern Primer works: build a pattern, pick it per post type, and Add New starts from it](.wordpress-org/screenshot-1.png)
 
 **[Try it in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/bmx269/pattern-primer/main/blueprint.json)** to test the plugin in your browser, with nothing to install. The demo sets a sample pattern as the default for Posts, so *Posts → Add New* opens with it.
 
@@ -8,17 +10,20 @@ Set a default block pattern for any post type's new-post editor. Database-stored
 - **License:** GPLv2 or later
 - **Author:** [Trent Stromkins](https://github.com/bmx269)
 
-## Overview
+## Getting started
 
-Pattern Primer adds a settings page where you can assign a block pattern to each registered post type. When a new post of that type is created, the editor opens with the pattern's blocks already in place.
+1. **Build a pattern.** Create one in the Site Editor (**Appearance → Editor → Patterns**), or use one that your theme or a plugin registers in code.
+2. **Pick it for a post type.** Go to **Appearance → Pattern Primer** and enter the pattern's slug next to each post type. The field suggests every pattern on the site as you type, and the Status column confirms it was found.
+3. **Add New starts from it.** New posts of that type open with the pattern's blocks already in place.
+
+Leave a post type blank to keep the normal empty editor. Only new posts that start out empty are filled, so existing content is never changed. The settings screen's **Help** tab repeats these steps.
 
 ## Features
 
-- Settings page under **Appearance → Pattern Primer**
-- Lists every public post type on the site
-- Accepts either a database pattern slug (Saved Pattern) or a file-registered pattern name
-- Database patterns take priority over file-registered patterns
-- Live status indicator confirms whether each configured slug resolves to a real pattern
+- Settings page under **Appearance → Pattern Primer**, listing every public post type
+- Works with patterns saved in the Site Editor and patterns registered in code by themes and plugins
+- Patterns saved in the Site Editor take priority over patterns in code
+- Status column shows where each pattern was found, with an **Edit** link for Site Editor patterns
 - Slug fields suggest the patterns available on the site as you type
 - Removes its option when the plugin is deleted, on every site in a multisite network
 
@@ -26,16 +31,16 @@ Pattern Primer adds a settings page where you can assign a block pattern to each
 
 1. Copy the `pattern-primer` folder into `wp-content/plugins/`, or upload the zip via **Plugins → Add New → Upload Plugin**.
 2. Activate the plugin from the **Plugins** screen.
-3. Visit **Appearance → Pattern Primer** and enter the pattern slug for each post type you want to pre-populate.
+3. Follow **Getting started** above.
 
-## Usage
+## Slugs
 
-For a **database pattern** (Saved Pattern), use the post slug, for example `branch-default`.
+For a pattern **saved in the Site Editor**, use its slug, for example `staff-profile`.
 
-For a **file-registered pattern**, use either:
+For a pattern **registered in code**, use either:
 
-- the full registered name, e.g. `myplugin/branch-default`, or
-- the slug portion alone, e.g. `branch-default`
+- the full registered name, e.g. `mytheme/staff-profile`, or
+- the part after the slash, e.g. `staff-profile`
 
 If no pattern matches the configured slug, the editor opens with its default blank state.
 

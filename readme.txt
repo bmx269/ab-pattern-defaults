@@ -16,6 +16,14 @@ Pattern Primer lets a site administrator pick a block pattern for each post type
 
 It's built for sites where every post of a given type follows the same structure: staff profiles, locations, events, case studies, press releases. Build the layout once as a pattern, point the post type at it, and writers start from the right blocks every time.
 
+= Getting started =
+
+1. **Build a pattern.** Create a pattern in the Site Editor (*Appearance → Editor → Patterns*), or use one that your theme or a plugin registers in code.
+2. **Pick it for a post type.** Go to *Appearance → Pattern Primer* and enter the pattern's slug next to Posts, Pages or any custom post type. Start typing and the field suggests every pattern on the site. The Status column confirms each one is found.
+3. **Add New starts from it.** Create a new post of that type and the editor opens with the pattern's blocks already in place, ready to edit.
+
+Leave a post type blank to keep WordPress's normal empty editor. Pattern Primer only fills new posts that start out empty, so it never changes content you've already written.
+
 **[Try it in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/bmx269/pattern-primer/main/blueprint.json)** to test the plugin in your browser, with nothing to install. The demo sets a sample pattern as the default for Posts, so *Posts → Add New* opens with it.
 
 = Key features =
@@ -28,7 +36,7 @@ It's built for sites where every post of a given type follows the same structure
 
 **Works with the patterns you already have**
 
-* Use patterns you built in the editor (Saved Patterns, stored in the database)
+* Use patterns you saved in the Site Editor (Saved Patterns)
 * Use patterns registered by your theme's `/patterns` folder or by a plugin
 * Reference a registered pattern by its full name (`mytheme/staff-profile`) or just the part after the slash (`staff-profile`)
 * Slug fields suggest every pattern on the site as you type
@@ -49,11 +57,11 @@ It's built for sites where every post of a given type follows the same structure
 
 When a new post is created, the plugin looks for the configured slug in this order and uses the first match:
 
-1. A published Saved Pattern whose slug matches
-2. A registered pattern whose full name matches
-3. A registered pattern whose name ends with the slug
+1. A published pattern saved in the Site Editor whose slug matches
+2. A pattern registered in code whose full name matches
+3. A pattern registered in code whose name ends with the slug
 
-Saved Patterns win. If the setting uses a short slug like `staff-profile`, you can override a theme's pattern by creating a Saved Pattern with that slug.
+Patterns saved in the Site Editor take priority over patterns in code. If the setting uses a short slug like `staff-profile`, you can override a theme's pattern by creating a Saved Pattern with that slug.
 
 = How it differs from core starter patterns =
 
@@ -89,9 +97,13 @@ Start typing in a slug field on the settings screen. It suggests every published
 
 A Saved Pattern's slug is its post slug, usually its title in lowercase with hyphens. A registered pattern's slug is its registered name, such as `mytheme/staff-profile`, or just `staff-profile`.
 
-= Which wins if a Saved Pattern and a registered pattern share a slug? =
+= What do "Saved in Site Editor" and "In Code" mean? =
 
-The Saved Pattern. Registered patterns are only used when no published Saved Pattern matches.
+They show where the matched pattern lives. "Saved in Site Editor" means it was made in WordPress and saved on your site, under *Appearance → Editor → Patterns* (or *Appearance → Patterns* with a classic theme, where it reads "Saved in Patterns"). Click **Edit** next to it to open that pattern. "In Code" means the pattern comes from your theme's or a plugin's files, so it's changed there rather than in WordPress.
+
+= What if a Saved Pattern and a registered pattern share a slug? =
+
+The pattern saved in the Site Editor takes priority over the one in code. A pattern in code is only used when no published Saved Pattern matches.
 
 = Does this work with custom post types? =
 
@@ -131,10 +143,11 @@ It stores a single option, `pattern_primer`, holding the post type to slug map. 
 
 == Screenshots ==
 
-1. The settings screen under Appearance lists every public post type. Leave a slug empty and that post type keeps WordPress's normal empty editor, as Location does here.
-2. After saving, the Status column confirms whether each slug matched a Saved Pattern or a registered pattern.
-3. A new Staff profile opens with the "Staff profile" Saved Pattern already in place.
-4. A new page opens with a pattern from the Twenty Twenty-Five theme, referenced by its full registered name.
+1. How Pattern Primer works: build a pattern, pick it for a post type, and every new post of that type starts from it.
+2. The settings screen under Appearance lists every public post type. Leave a slug empty and that post type keeps WordPress's normal empty editor, as Location does here.
+3. After saving, the Status column shows where each pattern was found: saved in the Site Editor, with a link to edit it, or registered in code.
+4. A new Staff profile opens with the "Staff profile" pattern already in place.
+5. A new page opens with a pattern from the Twenty Twenty-Five theme, referenced by its full registered name.
 
 == Changelog ==
 
@@ -144,7 +157,7 @@ Initial release.
 
 * Settings screen under Appearance to set a default block pattern for each public post type
 * Supports Saved Patterns and patterns registered by themes and plugins
-* Saved Patterns take priority over registered patterns with the same slug
+* Patterns saved in the Site Editor take priority over patterns in code with the same slug
 * Status column shows whether each slug matches a pattern
 * Slug fields suggest available patterns as you type
 * Only fills new posts that start out empty, and ignores unpublished Saved Patterns

@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Pattern Primer
  * Plugin URI:        https://github.com/bmx269/pattern-primer
- * Description:       Set a default block pattern for any post type's new-post editor. Database-stored patterns take priority over file-registered patterns.
+ * Description:       Set a default block pattern for any post type's new-post editor. Patterns saved in the Site Editor take priority over patterns in code.
  * Version:           1.0.0
  * Requires at least: 6.5
  * Requires PHP:      8.0
@@ -34,6 +34,8 @@ add_action( 'admin_menu', __NAMESPACE__ . '\\register_settings_page' );
 add_action( 'admin_init', __NAMESPACE__ . '\\register_settings' );
 add_filter( 'default_content', __NAMESPACE__ . '\\filter_default_content', 10, 2 );
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), __NAMESPACE__ . '\\add_settings_link' );
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_assets' );
+add_action( 'load-appearance_page_pattern-primer', __NAMESPACE__ . '\\add_help_tabs' );
 
 // ---------------------------------------------------------------------------
 // Settings registration
@@ -49,6 +51,68 @@ function register_settings_page(): void {
 		'manage_options',
 		'pattern-primer',
 		__NAMESPACE__ . '\\render_settings_page'
+	);
+}
+
+/**
+ * Load the settings screen stylesheet, on that screen only.
+ *
+ * @param string $hook_suffix Current admin page hook.
+ */
+function enqueue_admin_assets( string $hook_suffix ): void {
+	if ( 'appearance_page_pattern-primer' !== $hook_suffix ) {
+		return;
+	}
+
+	$path = plugin_dir_path( __FILE__ ) . 'assets/admin.css';
+	wp_enqueue_style(
+		'pattern-primer-admin',
+		plugins_url( 'assets/admin.css', __FILE__ ),
+		array(),
+		(string) filemtime( $path )
+	);
+}
+
+/**
+ * Add Help tabs to the settings screen.
+ */
+function add_help_tabs(): void {
+	$screen = get_current_screen();
+	if ( null === $screen ) {
+		return;
+	}
+
+	$screen->add_help_tab(
+		array(
+			'id'      => 'pattern-primer-getting-started',
+			'title'   => __( 'Getting started', 'pattern-primer' ),
+			'content' => '<ol>'
+				. '<li>' . esc_html__( 'Build a pattern. Create one in the Site Editor (Appearance > Editor > Patterns), or use one that your theme or a plugin registers in code.', 'pattern-primer' ) . '</li>'
+				. '<li>' . esc_html__( 'Enter its slug next to a post type on this screen. Start typing to see suggestions, then save.', 'pattern-primer' ) . '</li>'
+				. '<li>' . esc_html__( 'Create a new post of that type. The editor opens with the pattern\'s blocks already in place.', 'pattern-primer' ) . '</li>'
+				. '</ol>'
+				. '<p>' . esc_html__( 'Leave a post type blank to keep the normal empty editor. Only new posts that start out empty are filled, so existing content is never changed.', 'pattern-primer' ) . '</p>',
+		)
+	);
+
+	$screen->add_help_tab(
+		array(
+			'id'      => 'pattern-primer-matching',
+			'title'   => __( 'How matching works', 'pattern-primer' ),
+			'content' => '<p>' . esc_html__( 'When a new post is created, the slug is looked up in this order and the first match is used:', 'pattern-primer' ) . '</p>'
+				. '<ol>'
+				. '<li>' . esc_html__( 'A published pattern saved in the Site Editor with that slug.', 'pattern-primer' ) . '</li>'
+				. '<li>' . esc_html__( 'A pattern registered in code with that full name, such as mytheme/staff-profile.', 'pattern-primer' ) . '</li>'
+				. '<li>' . esc_html__( 'A pattern registered in code whose name ends with the slug, such as staff-profile.', 'pattern-primer' ) . '</li>'
+				. '</ol>'
+				. '<p>' . esc_html__( 'The Status column shows which one matched. "Saved in Site Editor" patterns have an Edit link. "In Code" patterns come from your theme or a plugin and are changed in their files.', 'pattern-primer' ) . '</p>',
+		)
+	);
+
+	$screen->set_help_sidebar(
+		'<p><strong>' . esc_html__( 'More help', 'pattern-primer' ) . '</strong></p>'
+		. '<p><a href="https://wordpress.org/support/plugin/pattern-primer/">' . esc_html__( 'Support forum', 'pattern-primer' ) . '</a></p>'
+		. '<p><a href="https://github.com/bmx269/pattern-primer">' . esc_html__( 'GitHub', 'pattern-primer' ) . '</a></p>'
 	);
 }
 
@@ -119,35 +183,41 @@ function render_settings_page(): void {
 	$saved      = get_saved_slugs();
 	?>
 	<div class="wrap">
-		<h1><?php echo esc_html__( 'Pattern Primer', 'pattern-primer' ); ?></h1>
+		<div class="pattern-primer-header">
+			<img src="<?php echo esc_url( plugins_url( 'assets/icon.svg', __FILE__ ) ); ?>" alt="">
+			<div>
+				<h1><?php echo esc_html__( 'Pattern Primer', 'pattern-primer' ); ?></h1>
+				<p><?php esc_html_e( 'Start every new post from the block pattern you picked for its post type.', 'pattern-primer' ); ?></p>
+			</div>
+		</div>
+		<hr class="wp-header-end">
 		<?php
 		// Pages outside the Settings menu don't print save notices automatically.
 		settings_errors();
 		?>
-		<p>
-			<?php esc_html_e( "Enter a pattern slug for each post type. When a new post is created the editor will be pre-populated with that pattern's content.", 'pattern-primer' ); ?>
-			<strong><?php esc_html_e( 'Database patterns (saved patterns) take priority over file-registered patterns.', 'pattern-primer' ); ?></strong>
-		</p>
-		<p>
-			<?php
-			printf(
-				/* translators: 1: example database pattern slug, 2: example file-registered pattern name. */
-				esc_html__( 'Enter the post slug for a database pattern (e.g. %1$s), or the full registered name for a file pattern (e.g. %2$s).', 'pattern-primer' ),
-				'<code>branch-default</code>',
-				'<code>myplugin/branch-default</code>'
-			);
-			?>
-		</p>
+		<div class="pattern-primer-intro">
+			<p><?php esc_html_e( 'Choose a pattern for each post type. New posts of that type open with its blocks already in place. Leave a field empty to keep the normal empty editor.', 'pattern-primer' ); ?></p>
+			<p>
+				<?php
+				printf(
+					/* translators: 1: example Saved Pattern slug, 2: example registered pattern name. */
+					esc_html__( 'Use the slug of a pattern saved in the Site Editor (%1$s) or the name of a pattern registered in code by your theme or a plugin (%2$s). Start typing to see suggestions. If both match, the pattern saved in the Site Editor takes priority over the one in code.', 'pattern-primer' ),
+					'<code>staff-profile</code>',
+					'<code>mytheme/staff-profile</code>'
+				);
+				?>
+			</p>
+		</div>
 
 		<form method="post" action="options.php">
 			<?php settings_fields( 'pattern_primer_group' ); ?>
 			<?php render_pattern_datalist(); ?>
-			<table class="widefat striped" style="max-width:900px">
+			<table class="widefat striped pattern-primer-table">
 				<thead>
 					<tr>
-						<th style="width:220px"><?php esc_html_e( 'Post Type', 'pattern-primer' ); ?></th>
-						<th><?php esc_html_e( 'Pattern Slug', 'pattern-primer' ); ?></th>
-						<th style="width:240px"><?php esc_html_e( 'Status', 'pattern-primer' ); ?></th>
+						<th class="column-type"><?php esc_html_e( 'Post type', 'pattern-primer' ); ?></th>
+						<th><?php esc_html_e( 'Pattern', 'pattern-primer' ); ?></th>
+						<th class="column-status"><?php esc_html_e( 'Status', 'pattern-primer' ); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -159,7 +229,7 @@ function render_settings_page(): void {
 					?>
 					<tr>
 						<td>
-							<label for="<?php echo esc_attr( $field_id ); ?>"><strong><?php echo esc_html( $type_label ); ?></strong></label><br>
+							<label for="<?php echo esc_attr( $field_id ); ?>"><?php echo esc_html( $type_label ); ?></label>
 							<code><?php echo esc_html( $type_slug ); ?></code>
 						</td>
 						<td>
@@ -168,8 +238,7 @@ function render_settings_page(): void {
 								id="<?php echo esc_attr( $field_id ); ?>"
 								name="<?php echo esc_attr( OPTION_KEY . '[' . $type_slug . ']' ); ?>"
 								value="<?php echo esc_attr( $saved_slug ); ?>"
-								placeholder="pattern-slug"
-								class="regular-text"
+								placeholder="<?php esc_attr_e( 'No default', 'pattern-primer' ); ?>"
 								list="pattern-primer-patterns"
 							>
 						</td>
@@ -237,7 +306,7 @@ function pattern_field( array $pattern, string $key ): string {
  *   3. File-registered pattern, matched by the slug portion of the name.
  *
  * @param string $slug Configured pattern slug or registered name.
- * @return array{source: string, content: string}|null Source is 'database' or 'file'.
+ * @return array{source: string, content: string, id: int}|null Source is 'database' or 'file'.
  */
 function locate_pattern( string $slug ): ?array {
 	if ( '' === $slug ) {
@@ -249,6 +318,7 @@ function locate_pattern( string $slug ): ?array {
 		return array(
 			'source'  => 'database',
 			'content' => $db->post_content,
+			'id'      => $db->ID,
 		);
 	}
 
@@ -259,6 +329,7 @@ function locate_pattern( string $slug ): ?array {
 		return array(
 			'source'  => 'file',
 			'content' => pattern_field( $file, 'content' ),
+			'id'      => 0,
 		);
 	}
 
@@ -268,6 +339,7 @@ function locate_pattern( string $slug ): ?array {
 			return array(
 				'source'  => 'file',
 				'content' => pattern_field( $pattern, 'content' ),
+				'id'      => 0,
 			);
 		}
 	}
@@ -285,20 +357,61 @@ function locate_pattern( string $slug ): ?array {
  */
 function render_pattern_status( string $slug ): string {
 	if ( '' === $slug ) {
-		return '<span style="color:#646970">&mdash; ' . esc_html__( 'not set', 'pattern-primer' ) . '</span>';
+		return '<span class="pattern-primer-status is-unset">' . esc_html__( 'Not set', 'pattern-primer' ) . '</span>';
 	}
 
 	$pattern = locate_pattern( $slug );
 
 	if ( null === $pattern ) {
-		return '<span style="color:#b32d2e">&#10007; ' . esc_html__( 'Pattern not found', 'pattern-primer' ) . '</span>';
+		return '<span class="pattern-primer-status is-missing">' . esc_html__( 'Not found', 'pattern-primer' ) . '</span>';
 	}
 
-	$label = 'database' === $pattern['source']
-		? __( 'Found in database', 'pattern-primer' )
-		: __( 'Found in file registry', 'pattern-primer' );
+	if ( 'database' !== $pattern['source'] ) {
+		return '<span class="pattern-primer-status is-found">' . esc_html__( 'In Code', 'pattern-primer' ) . '</span>';
+	}
 
-	return '<span style="color:#008a20">&#10003; ' . esc_html( $label ) . '</span>';
+	$label = wp_is_block_theme()
+		? __( 'Saved in Site Editor', 'pattern-primer' )
+		: __( 'Saved in Patterns', 'pattern-primer' );
+
+	$html = '<span class="pattern-primer-status is-found">' . esc_html( $label ) . '</span>';
+
+	$edit_url = pattern_edit_url( $pattern['id'] );
+	if ( '' !== $edit_url ) {
+		$html .= sprintf(
+			' <a class="pattern-primer-edit" href="%1$s">%2$s<span class="screen-reader-text"> %3$s</span></a>',
+			esc_url( $edit_url ),
+			esc_html__( 'Edit', 'pattern-primer' ),
+			esc_html( get_the_title( $pattern['id'] ) )
+		);
+	}
+
+	return $html;
+}
+
+/**
+ * Where to edit a Saved Pattern: the Site Editor on block themes, the post editor otherwise.
+ *
+ * @param int $pattern_id Saved Pattern (wp_block) post ID.
+ * @return string Edit URL, or an empty string when the current user can't edit it.
+ */
+function pattern_edit_url( int $pattern_id ): string {
+	if ( ! current_user_can( 'edit_post', $pattern_id ) ) {
+		return '';
+	}
+
+	if ( wp_is_block_theme() ) {
+		return add_query_arg(
+			array(
+				'postType' => 'wp_block',
+				'postId'   => $pattern_id,
+				'canvas'   => 'edit',
+			),
+			admin_url( 'site-editor.php' )
+		);
+	}
+
+	return (string) get_edit_post_link( $pattern_id, 'raw' );
 }
 
 /**
